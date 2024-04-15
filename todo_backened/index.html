@@ -1,115 +1,91 @@
 <html>
-    <head>
-        <title>
-            TODO APP
-        </title>
-    </head>
+
+<head>
+    <title>
+        TODO APP
+    </title>
+</head>
 <script>
 
-    function deletetodo(id) {
-            fetch("http://localhost:3001/todos/"+id,{
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    id: id
-                })
-            }).then(()=>{
-                console.log("Successfully deleted")
-            }).catch((error) => {
+let BASE_URL = ""; // Use an empty string for relative URLs
+
+function deletetodo(id) {
+    fetch(`/todos/` + id, { // Use a relative URL
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            id: id
+        })
+    }).then(() => {
+        console.log("Successfully deleted")
+    }).catch((error) => {
         console.error("Error deleting todo:", error);
     });
-            
-        }
+}
 
-        function parsedRes2(data){
-
-
-            console.log(data);
-
-            var parentEl = document.getElementById("mainArea")
-           // parentEl.innerHTML = JSON.stringify(data)
-            for (var i = 0; i <data.length; i++) {
-           var childEl = document.createElement("div")
-
-           var grandchild1 = document.createElement("span")
-           grandchild1.innerHTML = data[i].title
-           
-           var grandchild2 = document.createElement("span")
-           grandchild2.innerHTML = data[i].description
-
-           var grandchild3 = document.createElement("button")
-           grandchild3.innerHTML = "Delete"
-
-           grandchild3.setAttribute("onclick", "deletetodo("+ data[i].id+")")
-
-           childEl.appendChild(grandchild1)
-           childEl.appendChild(grandchild2)
-           childEl.appendChild(grandchild3)
-
-           //childEl.innerHTML = data[i].title
-           parentEl.appendChild(childEl)
-
-            }
-        }
-        function callback2(res){
-            res.json().then(parsedRes2)
-        }
-
-        function getData() {
-            fetch("http://localhost:3001/todos", {
-                method: 'GET',   
-            }).then(callback2)
-        }
-
-        
-        getData();
-
-
-         // alert("Press")
-         function parsedRes(data) {
-            console.log(data);
-        }
-
-        function callback(res) {
-            res.json().then(parsedRes)
-        }
-       
-        function onPress() {
-      
-      var ti = document.getElementById("title").value;
-      console.log(ti);
-      
-      var des = document.getElementById("description").value;
-
-      console.log(des);
-        fetch("http://localhost:3001/todos",{
-            method: "POST",
-            body: JSON.stringify({
-                "title": ti,
-                "status": "incomplete",
-                "description": des
-            }),
-            headers: {
-                "Content-Type": "application/json"
-            }
-         }).then(callback)
-
-
+function parsedRes2(data) {
+    var parentEl = document.getElementById("mainArea");
+    parentEl.innerHTML = ''; // Clear existing content
+    for (var i = 0; i < data.length; i++) {
+        var childEl = document.createElement("div");
+        var grandchild1 = document.createElement("span");
+        grandchild1.innerHTML = data[i].title;
+        var grandchild2 = document.createElement("span");
+        grandchild2.innerHTML = data[i].description;
+        var grandchild3 = document.createElement("button");
+        grandchild3.innerHTML = "Delete";
+        grandchild3.setAttribute("onclick", "deletetodo(" + data[i].id + ")");
+        childEl.appendChild(grandchild1);
+        childEl.appendChild(grandchild2);
+        childEl.appendChild(grandchild3);
+        parentEl.appendChild(childEl);
     }
+}
+
+function callback2(res) {
+    res.json().then(parsedRes2);
+}
+
+function getData() {
+    fetch(`/todos`, { // Use a relative URL
+        method: 'GET',
+    }).then(callback2);
+}
+
+getData();
+
+function onPress() {
+    var ti = document.getElementById("title").value;
+    var des = document.getElementById("description").value;
+    fetch(`/todos`, { // Use a relative URL
+        method: "POST",
+        body: JSON.stringify({
+            "title": ti,
+            "status": "incomplete",
+            "description": des
+        }),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(callback);
+}
+
+
 </script>
 
-    <body>
-        Todo title 
-        <input type="text" id = "title"></input>
-        <br ><br>
-        Todo description
-        <input type="text" id="description" ></input>
-        <br ><br>
-        <button onclick="onPress()">send todo</button>
-        <div id ="mainArea">
-            hi there
-        </div>
-    </body>
+<body>
+    Todo title
+    <input type="text" id="title"></input>
+    <br><br>
+    Todo description
+    <input type="text" id="description"></input>
+    <br><br>
+    <button onclick="onPress()">send todo</button>
+    <div id="mainArea">
+        hi there
+    </div>
+</body>
+
 </html>
