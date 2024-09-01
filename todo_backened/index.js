@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const app = express();
-const port = process.env.PORT // || 8000;
+const port = process.env.PORT  || 8000;
 const path = require('path');
 var val = 0;
 
@@ -102,7 +102,7 @@ function deleteToDo(request, response) {
 }
 
 function start() {
-  console.log(`Server is running on port`);
+  console.log(`Server is running on port ${port}`);
   loadTodosFromFile()
 }
 
