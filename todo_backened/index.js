@@ -47,6 +47,8 @@ function find(id) {
 }
 function postToDo(request, response) {
   //loadTodosFromFile()
+
+  console.log("just checking something")
   getId()
   var title = request.body.title;
   var description = request.body.description;
